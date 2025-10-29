@@ -45,6 +45,5 @@ export const AddIconButton = styled.button`
 `;
 export const AddNewCategoryContainer = styled.div`
   display: flex;
-  margin-top: 10px;
   gap:8px;
   `
