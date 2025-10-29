@@ -43,3 +43,8 @@ export const AddIconButton = styled.button`
     pointer-events: none;
   }
 `;
+export const AddNewCategoryContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+  gap:8px;
+  `

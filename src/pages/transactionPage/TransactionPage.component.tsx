@@ -185,9 +185,6 @@ const TransactionsPage: FC = () => {
             setStartDate(e.target.value);
             if (endDate && e.target.value > endDate) setEndDate(e.target.value);
           }}
-          // InputLabelProps={{
-          // shrink: !!endDate,
-          // }}
         />
         <TextField
           type="date"
@@ -200,9 +197,6 @@ const TransactionsPage: FC = () => {
             }
             setEndDate(e.target.value);
           }}
-  //         InputLabelProps={{
-  //         shrink: !!endDate,
-  // }}
         />
       </FiltersContainer>
       <TableContainer>
@@ -248,7 +242,7 @@ const TransactionsPage: FC = () => {
                   </TableCell>
                   <TableCell>{convertToEUR(t.amount, t.currency)} EUR</TableCell>
                   <TableCell>
-                    <IconsContainer>
+                    <IconsContainer style={{ display: "flex", gap: "8px" }}>
                       <DeleteOutlineIcon
                         onClick={() => handleDelete(index)}
                         style={{ cursor: "pointer" }}
@@ -264,6 +258,7 @@ const TransactionsPage: FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
       <EditTransactionModal
         open={openEditModal}
         transaction={editingTransaction}
@@ -271,6 +266,7 @@ const TransactionsPage: FC = () => {
         onClose={() => setOpenEditModal(false)}
         onSave={handleSaveEdit}
       />
+
       <TablePagination
         sx={{ display: "flex", justifyContent: "flex-end" }}
         rowsPerPageOptions={[5, 10]}

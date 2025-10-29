@@ -29,7 +29,6 @@ const convertToEUR = (amount: number | string, currency: string) => {
     const stored = localStorage.getItem("transactions");
     if (stored) setTransactions(JSON.parse(stored));
   }, []);
-  
   return (
     <>
     <BrowserRouter>

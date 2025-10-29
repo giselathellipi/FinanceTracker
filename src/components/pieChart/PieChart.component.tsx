@@ -60,7 +60,7 @@ const CustomPieChart: React.FC<Props> = ({ transactions }) => {
       </Box>
       <Box display="flex" justifyContent="center" gap={4} mt={2}>
         <Typography color="#63ca5bff">Income: {percentIncome}%</Typography>
-        <Typography color="#e73f33ff">Expenses: {percentExpenses}%</Typography>
+        <Typography color="#b73228ff">Expenses: {percentExpenses}%</Typography>
       </Box>
     </Box>
   );

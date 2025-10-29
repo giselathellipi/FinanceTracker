@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "finance-tracker",
   "version": "0.1.0",
   "private": true,
@@ -7,10 +8,6 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^1.12.2",
     "chart.js": "^4.5.1",
     "i18next": "^25.6.0",
@@ -19,7 +16,7 @@
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.0",
     "react-i18next": "^16.2.1",
-    "react-router-dom": "^7.9.4",
+    "react-router-dom": "^7.9.5",
     "react-scripts": "5.0.1",
     "recharts": "^3.3.0",
     "styled-components": "^6.1.19",
@@ -28,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+     "test": "set NODE_OPTIONS=--experimental-vm-modules && jest --passWithNoTests",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -50,9 +47,17 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.35",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "typescript": "^5.3.3"
   }
 }

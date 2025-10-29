@@ -40,26 +40,30 @@ const SummarySection: FC = () => {
   return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("https://open.er-api.com/v6/latest/EUR")
-      .then((res) => {
-        const data = Object.keys(res.data.rates).map((key) => ({
-          code: key,
-          name: key,
-        }));
-        setCurrencies(data);
-      })
-      .catch((err) => console.error("Error fetching currency list:", err));
-   }, []);
+useEffect(() => {
+  if (!displayCurrency) return;
 
-  const convertToDisplayCurrency = (amount: number, fromCurrency: string): number => {
-    if (fromCurrency === displayCurrency) return amount;
-    if (!rates[fromCurrency]) return amount; 
+  axios
+    .get(`https://open.er-api.com/v6/latest/${displayCurrency}`)
+    .then((res) => {
+      setRates(res.data.rates);
+      const data = Object.keys(res.data.rates).map((key) => ({
+        code: key,
+        name: key,
+      }));
+      setCurrencies(data);
+    })
+    .catch((err) => console.error("Error fetching currency rates:", err));
+}, [displayCurrency]);
 
-    const rateToDisplay = 1 / rates[fromCurrency];
-    return amount * rateToDisplay;
-   };
+
+const convertToDisplayCurrency = (amount: number | string, currency: string) => {
+  if (!rates || !rates[currency]) return Number(amount);
+  if (currency === displayCurrency) return Number(amount);
+  const rateToDisplay = rates[displayCurrency] / rates[currency];
+  return Number(amount) * rateToDisplay;
+};
+
 
   const totalIncome = transactions
     .filter((t) => t.type === "Income")

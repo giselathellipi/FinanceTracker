@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 // styles
-import { AddIconButton, StyledSelect } from "./GenericDropdown.style";
+import { AddIconButton, AddNewCategoryContainer, StyledSelect } from "./GenericDropdown.style";
 
 // components
 import GenericInput from "components/genericInput/GenericInput.component";
@@ -39,14 +39,13 @@ const GenericDropdown: FC<DropdownProps> = ({
       setNewOption("");
     }
   };
-  const translatedPlaceholder = placeholder || t("select_option");
+
   return (
     <>
       <StyledSelect value={value} onChange={handleChange}>
         <option value="" disabled hidden>
           {placeholder}
         </option>
-
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
@@ -55,10 +54,10 @@ const GenericDropdown: FC<DropdownProps> = ({
       </StyledSelect>
 
       {allowAddNew && (
-        <div style={{ marginTop: "8px", display: "flex", gap: "8px" }}>
+        <AddNewCategoryContainer>
           <GenericInput
             type="text"
-            placeholder={translatedPlaceholder}
+            placeholder={t("add_new_category")}
             value={newOption}
             onChange={(value: string) =>
             setNewOption(value)
@@ -67,7 +66,7 @@ const GenericDropdown: FC<DropdownProps> = ({
           <AddIconButton type="button" onClick={handleAddNew}>
             <Plus size={18} />
           </AddIconButton>
-        </div>
+        </AddNewCategoryContainer>
       )}
     </>
   );
