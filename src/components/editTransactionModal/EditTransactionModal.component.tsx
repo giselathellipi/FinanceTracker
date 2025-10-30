@@ -107,7 +107,6 @@ const EditTransactionModal: FC<EditTransactionModalProps> = ({
           label={t("date")}
           value={formData.date || ""}
           onChange={(e) => handleChange("date", e.target.value)}
-          // InputLabelProps={{ shrink: true }}
         />
         <TextField
           label={t("description")}

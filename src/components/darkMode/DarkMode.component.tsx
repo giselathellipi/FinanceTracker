@@ -1,4 +1,3 @@
-// components/darkMode/DarkMode.component.tsx
 import React, { createContext, useContext, useMemo, useState, useEffect } from "react";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
@@ -20,7 +19,6 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  // MUI theme dynamic
   const theme = useMemo(
     () =>
       createTheme({
@@ -41,7 +39,7 @@ export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   return (
     <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
       <ThemeProvider theme={theme}>
-        <CssBaseline /> {/* për ta bërë dark mode global */}
+        <CssBaseline />
         {children}
       </ThemeProvider>
     </DarkModeContext.Provider>
