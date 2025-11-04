@@ -2,15 +2,17 @@ import React, { FC, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 
-//styles
+// styles
 import {
   AddTransactionContainer,
   AddTransactionFormHolder,
   TransactionTitle,
 } from "./AddTransactionPage.style";
 
-//components
+// components
 import GenericInput from "components/genericInput/GenericInput.component";
 import GenericDropdown from "components/genericDropdown/GenericDropdown.component";
 import GenericButton from "components/genericButton/GenericButton.component";
@@ -35,6 +37,9 @@ const AddTransactionPage: FC = () => {
 
   const [currencies, setCurrencies] = useState<Currency[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [alertType, setAlertType] = useState<"success" | "warning" | null>(null);
+
   const [transaction, setTransaction] = useState<Transaction>({
     description: "",
     amount: "",
@@ -44,7 +49,6 @@ const AddTransactionPage: FC = () => {
     date: new Date().toISOString().split("T")[0],
   });
 
-  // Load categories from localStorage
   useEffect(() => {
     const stored = localStorage.getItem("categories");
     if (stored) {
@@ -56,7 +60,6 @@ const AddTransactionPage: FC = () => {
     }
   }, []);
 
-  // Add new category
   const handleAddCategory = (newCat: string) => {
     const trimmed = newCat.trim();
     if (trimmed && !categories.includes(trimmed)) {
@@ -66,18 +69,18 @@ const AddTransactionPage: FC = () => {
     }
   };
 
-  // Get currencies from API
   useEffect(() => {
     axios.get("https://open.er-api.com/v6/latest/EUR").then((res) => {
+      console.log("res",res);
       const data = Object.keys(res.data.rates).map((key) => ({
         code: key,
         name: key,
       }));
       setCurrencies(data);
+      console.log("data",data);
     });
   }, []);
 
-  // Handle input change
   const handleChange = (field: keyof Transaction, value: any) => {
     setTransaction((prev) => ({ ...prev, [field]: value }));
   };
@@ -85,16 +88,27 @@ const AddTransactionPage: FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!transaction.description || !transaction.amount || !transaction.type || !transaction.currency) {
-      alert(t("please_fill_all_fields"));
+    if (
+      !transaction.description ||
+      !transaction.amount ||
+      !transaction.type ||
+      !transaction.currency
+    ) {
+      setAlertMessage(t("please_fill_all_fields"));
+      setAlertType("warning");
       return;
     }
 
     const stored = JSON.parse(localStorage.getItem("transactions") || "[]");
     const updated = [...stored, transaction];
     localStorage.setItem("transactions", JSON.stringify(updated));
-    alert(t("transaction_submitted"));
-    navigate("/transactionPage");
+
+    setAlertMessage(t("transaction_submitted"));
+    setAlertType("success");
+    setTimeout(() => {
+      navigate("/transactionPage");
+    }, 3000);
+
     setTransaction({
       description: "",
       amount: "",
@@ -121,6 +135,16 @@ const AddTransactionPage: FC = () => {
     <AddTransactionContainer>
       <AddTransactionFormHolder onSubmit={handleSubmit}>
         <TransactionTitle>{t("add_transaction")}</TransactionTitle>
+        {alertMessage && alertType && (
+          <Alert
+            icon={<CheckIcon fontSize="inherit" />}
+            severity={alertType}
+            sx={{ marginBottom: 2 }}
+            onClose={() => setAlertMessage(null)}
+          >
+            {alertMessage}
+          </Alert>
+        )}
         <GenericInput
           value={transaction.description}
           onChange={(v) => handleChange("description", v)}

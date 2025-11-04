@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const AddTransactionContainer = styled.div`
     display: flex;
-    height: 100vh;
+    height: 100%;
+    margin: 15px 0;
 `;
 
 export const AddTransactionFormHolder = styled.form`
@@ -22,7 +23,7 @@ export const TransactionTitle=styled.h1`
      font-family: "Space Grotesk", sans-serif;
      font-style: normal;
      color: #16324f; 
-     font-size:27px;
+     font-size:24px;
 `
 export const InputsContainer= styled.div`
   margin: 30px;

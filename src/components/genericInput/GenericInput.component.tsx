@@ -4,14 +4,12 @@ import React, { FC } from "react";
 //styles
 import { StyledInput } from "./GenericInput.style";
 
-// Define props interface
 interface InputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   type?: string;
 }
-
 
 const GenericInput: FC<InputProps> = ({ value, onChange, placeholder, type = "text" }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

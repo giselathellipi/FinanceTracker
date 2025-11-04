@@ -2,8 +2,7 @@ import styled from "styled-components";
 
 export const StyledButton = styled.button`
     border: 1px;
-    background: #16324f
-    ;
+    background: #16324f;
     border-radius: 4.3px;
     font-family: "Space Grotesk", sans-serif;
     font-size: 16px;

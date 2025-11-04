@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState, useEffect } from "react";
+import React, { createContext, useContext, useMemo, useState, useEffect, FC } from "react";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
 const DarkModeContext = createContext({
@@ -8,7 +8,7 @@ const DarkModeContext = createContext({
 
 export const useTheme = () => useContext(DarkModeContext);
 
-export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const DarkModeProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "true"
   );

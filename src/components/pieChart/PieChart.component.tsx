@@ -19,20 +19,21 @@ const CustomPieChart: React.FC<Props> = ({ transactions }) => {
   const totals = transactions.reduce(
     (acc, t) => {
       const amount = t.amount_eur ?? Number(t.amount);
+      console.log(amount)
       if (t.type === "Income") acc.Income += amount;
       else if (t.type === "Expense") acc.Expenses += amount;
       return acc;
     },
     { Income: 0, Expenses: 0 }
   );
-
+console.log(totals)
   const totalAll = totals.Income + totals.Expenses;
 
   const data = [
     { name: "Income", value: totals.Income },
     { name: "Expenses", value: totals.Expenses },
   ];
-
+console.log("Pie Chart Data:", data);
   const percentIncome = totalAll ? ((totals.Income / totalAll) * 100).toFixed(1) : "0";
   const percentExpenses = totalAll ? ((totals.Expenses / totalAll) * 100).toFixed(1) : "0";
 
