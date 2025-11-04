@@ -124,10 +124,9 @@ const TransactionsPage: FC = () => {
       <SummaryAndChartContainer>
         <PieChartContainer style={{ flex: 1 }}>
           <CustomPieChart
-            transactions={transactions.map((t) => ({
-              ...t,
-              amount_eur: Number(t.amount),
-            }))}
+          transactions={transactions}
+          displayCurrency={displayCurrency}
+          rates={rates}
           />
         </PieChartContainer>
         <SummarySectionContainer>

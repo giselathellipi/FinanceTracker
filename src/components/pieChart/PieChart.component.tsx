@@ -6,34 +6,41 @@ interface Transaction {
   type: "Income" | "Expense";
   amount: number | string;
   currency: string;
-  amount_eur?: number;
 }
 
 interface Props {
   transactions: Transaction[];
+  displayCurrency: string;
+  rates: { [key: string]: number };
 }
 
 const COLORS = ["#63ca5bff", "#e73f33ff"];
 
-const CustomPieChart: React.FC<Props> = ({ transactions }) => {
+const CustomPieChart: React.FC<Props> = ({ transactions, displayCurrency, rates }) => {
+  const convertToDisplayCurrency = (amount: number | string, currency: string) => {
+    if (!rates || !rates[currency]) return Number(amount);
+    if (currency === displayCurrency) return Number(amount);
+    const rateToDisplay = rates[displayCurrency] / rates[currency];
+    return Number(amount) * rateToDisplay;
+  };
+
   const totals = transactions.reduce(
     (acc, t) => {
-      const amount = t.amount_eur ?? Number(t.amount);
-      console.log(amount)
-      if (t.type === "Income") acc.Income += amount;
-      else if (t.type === "Expense") acc.Expenses += amount;
+      const converted = convertToDisplayCurrency(Number(t.amount), t.currency);
+      if (t.type === "Income") acc.Income += converted;
+      else if (t.type === "Expense") acc.Expenses += converted;
       return acc;
     },
     { Income: 0, Expenses: 0 }
   );
-console.log(totals)
+
   const totalAll = totals.Income + totals.Expenses;
 
   const data = [
     { name: "Income", value: totals.Income },
     { name: "Expenses", value: totals.Expenses },
   ];
-console.log("Pie Chart Data:", data);
+
   const percentIncome = totalAll ? ((totals.Income / totalAll) * 100).toFixed(1) : "0";
   const percentExpenses = totalAll ? ((totals.Expenses / totalAll) * 100).toFixed(1) : "0";
 
@@ -48,13 +55,18 @@ console.log("Pie Chart Data:", data);
               cy="50%"
               outerRadius="80%"
               dataKey="value"
-              label
+              label={(entry: any) => `${Number(entry.value).toFixed(2)}`}
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value: number) => `${value.toFixed(2)}€`} />
+           <Tooltip
+           formatter={(value: number) => {
+           const rounded = Number(value).toFixed(2);
+           return [`${rounded} ${displayCurrency}`];
+           }}
+            />
             <Legend />
           </PieChart>
         </ResponsiveContainer>

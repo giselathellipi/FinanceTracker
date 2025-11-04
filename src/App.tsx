@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import axios from "axios";
 
 //components
 import AddTransactionPage from "pages/addTransactionPage/AddTransactionPage.component";
@@ -14,43 +15,42 @@ interface Transaction {
   amount_eur?: number;
 }
 
-const App: FC<{}> = () => {
-const [transactions, setTransactions] = useState<Transaction[]>([]);
-const rates: { [key: string]: number } = {}; 
-
-const convertToEUR = (amount: number | string, currency: string) => {
-  if (!rates || !currency || currency === "EUR") return Number(amount).toFixed(2);
-  const rate = rates[currency];
-  if (!rate) return "N/A";
-  return (Number(amount) / rate).toFixed(2);
-};
+const App: FC = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [rates, setRates] = useState<{ [key: string]: number }>({});
+  const [displayCurrency, setDisplayCurrency] = useState("EUR");
 
   useEffect(() => {
     const stored = localStorage.getItem("transactions");
     if (stored) setTransactions(JSON.parse(stored));
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`https://open.er-api.com/v6/latest/${displayCurrency}`)
+      .then((res) => setRates(res.data.rates))
+      .catch((err) => console.error("Error fetching currency rates:", err));
+  }, [displayCurrency]);
+
   return (
-    <>
     <BrowserRouter>
-    <Navbar/>
-    <Routes>
-    <Route path="/" element={<AddTransactionPage/>}/>
-    <Route path="/transactionPage" element={<TransactionsPage/>}/>
-    <Route
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<AddTransactionPage />} />
+        <Route path="/transactionPage" element={<TransactionsPage />} />
+        <Route
           path="/pieChart"
-          element={<CustomPieChart
-            transactions={transactions.map((t) => ({
-              ...t,
-              amount_eur: Number(convertToEUR(t.amount, t.currency))
-            }))}
-          />}
+          element={
+            <CustomPieChart
+              transactions={transactions}
+              displayCurrency={displayCurrency}
+              rates={rates}
+            />
+          }
         />
-    </Routes>
+      </Routes>
     </BrowserRouter>
-    </>
   );
 };
 
 export default App;
-
-
